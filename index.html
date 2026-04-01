@@ -51,11 +51,11 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        .header {
-            background: linear-gradient(135deg, #1B1F3B 0%, #2A305A 50%, #363E78 100%);
-            position: relative;
-            overflow: hidden;
-        }
+	.header {
+  		background: linear-gradient(135deg, #041e2b 0%, #0b2f3a 50%, #0f3d48 100%);
+  		position: relative;
+  		overflow: hidden;
+	}        
 
         .header::before {
             content: '';
@@ -70,21 +70,28 @@
         .header-badges { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
 
         .h-badge { padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
-        .h-badge.elmo { background: rgba(79,107,246,0.2); color: #93AAFD; }
-        .h-badge.datapay { background: rgba(16,185,129,0.2); color: #6EE7B7; }
-        .h-badge.ver { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); }
-
-        .header h1 { font-size: 28px; font-weight: 800; color: #fff; letter-spacing: -0.5px; margin-bottom: 6px; }
-        .header h1 span { background: linear-gradient(135deg, #93AAFD, #6EE7B7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .header p { font-size: 14px; color: rgba(255,255,255,0.5); max-width: 560px; }
+ 	.h-badge.elmo,
+	.h-badge.datapay,
+	.h-badge.ver {
+  	background: rgba(255,255,255,0.08);
+  	color: #ffffff;
+  	border: 1px solid rgba(255,255,255,0.12);
+	}      
+         .header h1 { font-size: 28px; font-weight: 800; color: #fff; letter-spacing: -0.5px; margin-bottom: 6px; }
+	.header h1 span { color: #ffffff; background: none; -webkit-text-fill-color: #ffffff; }        
+        .header p { font-size: 14px; color: rgba(255,255,255,0.75); max-width: 560px; }
         .header-meta { display: flex; gap: 28px; margin-top: 18px; flex-wrap: wrap; }
         .hm-item { display: flex; align-items: center; gap: 8px; }
         .hm-icon { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; }
-        .hm-icon.bl { background: rgba(79,107,246,0.15); }
-        .hm-icon.gr { background: rgba(16,185,129,0.15); }
-        .hm-icon.am { background: rgba(245,158,11,0.15); }
+        .hm-icon.bl,
+	.hm-icon.gr,
+	.hm-icon.am {
+ 	background: rgba(255,255,255,0.18);
+  	color: #5ee7ef;
+  	border: 1px solid rgba(255,255,255,0.18);
+	}
         .hm-val { font-size: 12px; font-weight: 700; color: #fff; }
-        .hm-label { font-size: 10px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.5px; }
+        .hm-label { font-size: 10px; color: rgba(255,255,255,0.65); text-transform: uppercase; letter-spacing: 0.5px; }
 
         .legend-bar { max-width: 860px; margin: 0 auto; padding: 16px 32px 0; }
         .legend-row { display: flex; gap: 20px; flex-wrap: wrap; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 20px; }
@@ -135,7 +142,7 @@
         .tc-btn:hover { border-color: var(--border-hover); background: var(--gray-bg); }
         .tc-btn.yes.active { background: var(--green); color: #fff; border-color: var(--green); }
         .tc-btn.no.active { background: var(--red); color: #fff; border-color: var(--red); }
-        .threshold-card.passed { border-color: var(--green-border); background: var(--green-bg); }
+	.threshold-card.passed { border-color: #8fd9cf !important; background: #f4fbfb !important; }        
         .threshold-card.failed { border-color: var(--red-border); background: var(--red-bg); }
 
         .stop-banner { display: none; margin: 16px 0; padding: 24px; border-radius: var(--radius-lg); background: var(--red-bg); border: 2px solid var(--red-border); text-align: center; animation: fadeSlideIn 0.3s ease; }
@@ -222,7 +229,7 @@
 
         .result-section { margin-top: 28px; }
         .result-card { padding: 32px; border-radius: var(--radius-lg); text-align: center; transition: all 0.3s ease; }
-        .result-card .r-icon { font-size: 44px; margin-bottom: 12px; }
+	.result-card .r-icon { font-size: 44px; margin-bottom: 12px; color: #00a9b7 !important; }        
         .result-card h3 { font-size: 22px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 6px; }
         .result-card p { font-size: 14px; max-width: 540px; margin: 0 auto; line-height: 1.6; }
         .result-card.neutral { background: var(--gray-bg); border: 2px solid var(--border); }
@@ -240,9 +247,9 @@
         .result-card.black { background: #E0E1E9; border: 2px solid var(--black-border); }
         .result-card.black h3 { color: var(--black-dark); }
         .result-card.black p { color: var(--black-dark); opacity: 0.8; }
-        .result-card.inprogress { background: var(--blue-bg); border: 2px solid var(--blue-border); }
-        .result-card.inprogress h3 { color: var(--blue-dark); }
-        .result-card.inprogress p { color: var(--blue-dark); opacity: 0.8; }
+	.result-card.inprogress { background: #f8fafc; border: 1px solid #d1d5db; }        
+        .result-card.inprogress h3 { color: #111827; }
+        .result-card.inprogress p { color: #4b5563; opacity: 1; }
         .result-cautions { margin-top: 16px; text-align: left; max-width: 540px; margin-left: auto; margin-right: auto; }
         .result-cautions h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
         .result-cautions ul { list-style: none; padding: 0; }
@@ -288,7 +295,83 @@
             .status-bar, .actions-bar, .legend-bar, .info-btn, .info-overlay { display: none !important; }
             body { background: #fff; }
         }
-    </style>
+    /* ========================= */
+/* DATAPAY BRAND OVERRIDE */
+/* ========================= */
+
+/* Base */
+body {
+  background-color: #f5f7f8;
+  color: #1a1a1a;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* Header / Hero */
+.header, .hero, .top-section {
+  background: linear-gradient(90deg, #041e2b, #0b2f3a) !important;
+  color: white !important;
+}
+
+/* Buttons */
+button, .btn, .primary-btn {
+  background: transparent !important;
+  border: 2px solid #00a9b7 !important;
+  color: #00a9b7 !important;
+  border-radius: 6px !important;
+  transition: all 0.2s ease;
+}
+
+button:hover, .btn:hover, .primary-btn:hover {
+  background: #00a9b7 !important;
+  color: white !important;
+}
+
+/* Cards */
+.card, .panel, .box {
+  background: white !important;
+  border: 1px solid #d0e6e8 !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+}
+
+/* Light sections */
+.section, .section-light {
+  background: #e6f4f5 !important;
+}
+
+/* Labels / chips */
+.chip, .tag {
+  border: 1px solid #d0e6e8 !important;
+  background: white !important;
+  color: #1a1a1a !important;
+}
+
+/* Helper banners (remove purple look) */
+.helper, .info-box, .note {
+  background: #e6f4f5 !important;
+  border-left: 4px solid #00a9b7 !important;
+  color: #1a1a1a !important;
+}
+
+/* Remove strong gradients (fallback cleanup) */
+* {
+  box-shadow: none !important;
+}
+
+
+.section-divider {
+  height: 3px;
+  background: linear-gradient(90deg, #00a9b7, #6fd3db);
+  width: 80px;
+  margin: 10px 0 20px 0;
+  border-radius: 2px;
+}
+.section-sub {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+</style>
 </head>
 <body style="">
 
@@ -313,9 +396,9 @@
             <h1>Seller <span>Qualification Gate</span></h1>
             <p>Determine in 2–3 minutes whether this opportunity qualifies for the Tier One fast-track motion.</p>
             <div class="header-meta">
-                <div class="hm-item"><div class="hm-icon bl">👤</div><div><div class="hm-val">Internal Only</div><div class="hm-label">Audience</div></div></div>
+                <div class="hm-item"><div class="hm-icon bl">i</div><div><div class="hm-val">Internal Only</div><div class="hm-label">Audience</div></div></div>
                 <div class="hm-item"><div class="hm-icon gr">⏱️</div><div><div class="hm-val">2–3 Minutes</div><div class="hm-label">Duration</div></div></div>
-                <div class="hm-item"><div class="hm-icon am">🎯</div><div><div class="hm-val">Eligibility Gate</div><div class="hm-label">Purpose</div></div></div>
+                <div class="hm-item"><div class="hm-icon am">🎯</div><div><div class="hm-val">Qualification</div><div class="hm-label">Purpose</div></div></div>
             </div>
         </div>
     </div>
@@ -350,9 +433,11 @@
             </div>
         </div>
 
-        <div class="section-label">🚦 Threshold Gate — Non-Negotiable <span class="sl-line"></span></div>
+<div class="section-label">Entry criteria</div>
+<div class="section-sub">Non-negotiable requirements</div>       
+	<div class="section-divider"></div>
 
-        <div class="threshold-card passed" id="thresh1">
+	<div class="threshold-card passed" id="thresh1">
             <div class="tc-top">
                 <span class="tc-num">01</span>
                 <div class="tc-q">Organisation size: <strong>100–2,000 employees</strong> <button class="info-btn" onclick="event.stopPropagation();showInfo('thresh-size')">i</button></div>
@@ -380,7 +465,9 @@
         </div>
 
         <div class="qual-section" id="qualSection">
-            <div class="section-label">🔍 Qualification — Select One Option Per Question <span class="sl-line"></span></div>
+<div class="section-label">Qualification</div>
+<div class="section-sub">Select one option per question</div>
+<div class="section-divider"></div>            
             <div id="questionsContainer"><div class="q-card" id="qcard-0">
                     <div class="q-top">
                         <span class="q-num">Q1</span>
@@ -600,7 +687,7 @@
 
         <div class="result-section">
             <div class="result-card inprogress" id="resultCard">
-                <div class="r-icon" id="rIcon">🔍</div>
+            <div class="r-icon" id="rIcon">◉</div>    
                 <h3 id="rTitle">Qualification In Progress</h3>
                 <p id="rText">14 items remaining.</p>
                 <div class="result-cautions" id="rCautions" style="display:none;">
@@ -613,7 +700,7 @@
         <div class="routing-card">
             <h3>📝 Routing Summary</h3>
             <div class="routing-grid">
-                <div class="r-field"><label>Routing Decision</label><div class="routing-decision-box" id="routingBox" style="background: var(--blue-bg); color: var(--blue-dark);">⏳ 14 remaining</div></div>
+                <div class="r-field"><label>Routing Decision</label><div class="routing-decision-box" id="routingBox" style="background: #f8fafc; color: #111827; border: 1px solid #d1d5db;">⏳ 14 remaining</div>
                 <div class="r-field"><label>Flags &amp; Notes</label><textarea id="cautionNotes" placeholder="Auto-populated from your selections..."></textarea></div>
                 <div class="r-field half"><label>Next Step</label><input type="text" id="nextStep" placeholder="e.g., Route to Lite Discovery"></div>
                 <div class="r-field half"><label>Owner</label><input type="text" id="nextOwner" placeholder="e.g., Adnan Siamwala"></div>
