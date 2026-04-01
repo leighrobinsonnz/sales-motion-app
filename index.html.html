@@ -1,0 +1,1031 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ELMO × Datapay — Seller Qualification Gate v2.1</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --bg: #F7F8FC;
+            --white: #FFFFFF;
+            --border: #E4E7F1;
+            --border-hover: #CBD0E0;
+            --text: #1B1F3B;
+            --text-sec: #515672;
+            --text-muted: #8B90A8;
+            --green: #10B981;
+            --green-bg: #ECFDF5;
+            --green-border: #A7F3D0;
+            --green-dark: #065F46;
+            --amber: #F59E0B;
+            --amber-bg: #FFFBEB;
+            --amber-border: #FDE68A;
+            --amber-dark: #92400E;
+            --red: #EF4444;
+            --red-bg: #FEF2F2;
+            --red-border: #FECACA;
+            --red-dark: #991B1B;
+            --black: #1B1F3B;
+            --black-bg: #E8E9EF;
+            --black-border: #C5C8D8;
+            --black-dark: #0F1225;
+            --blue: #4F6BF6;
+            --blue-bg: #EEF1FE;
+            --blue-border: #C7D2FE;
+            --blue-dark: #3730A3;
+            --gray-bg: #F1F2F7;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+            --radius: 12px;
+            --radius-lg: 16px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1B1F3B 0%, #2A305A 50%, #363E78 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -120px; right: -80px;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(79,107,246,0.12) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .header-inner { max-width: 860px; margin: 0 auto; padding: 36px 32px 32px; position: relative; z-index: 1; }
+        .header-badges { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+
+        .h-badge { padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
+        .h-badge.elmo { background: rgba(79,107,246,0.2); color: #93AAFD; }
+        .h-badge.datapay { background: rgba(16,185,129,0.2); color: #6EE7B7; }
+        .h-badge.ver { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); }
+
+        .header h1 { font-size: 28px; font-weight: 800; color: #fff; letter-spacing: -0.5px; margin-bottom: 6px; }
+        .header h1 span { background: linear-gradient(135deg, #93AAFD, #6EE7B7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .header p { font-size: 14px; color: rgba(255,255,255,0.5); max-width: 560px; }
+        .header-meta { display: flex; gap: 28px; margin-top: 18px; flex-wrap: wrap; }
+        .hm-item { display: flex; align-items: center; gap: 8px; }
+        .hm-icon { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+        .hm-icon.bl { background: rgba(79,107,246,0.15); }
+        .hm-icon.gr { background: rgba(16,185,129,0.15); }
+        .hm-icon.am { background: rgba(245,158,11,0.15); }
+        .hm-val { font-size: 12px; font-weight: 700; color: #fff; }
+        .hm-label { font-size: 10px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .legend-bar { max-width: 860px; margin: 0 auto; padding: 16px 32px 0; }
+        .legend-row { display: flex; gap: 20px; flex-wrap: wrap; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 20px; }
+        .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: var(--text-sec); }
+        .legend-dot { width: 12px; height: 12px; border-radius: 4px; }
+        .legend-dot.g { background: var(--green); }
+        .legend-dot.a { background: var(--amber); }
+        .legend-dot.r { background: var(--red); }
+        .legend-dot.b { background: var(--black); }
+
+        .status-bar { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; }
+        .status-inner { max-width: 860px; margin: 0 auto; padding: 12px 32px; display: flex; align-items: center; gap: 16px; }
+        .status-progress { flex: 1; display: flex; align-items: center; gap: 12px; }
+        .sp-label { font-size: 11px; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
+        .sp-track { flex: 1; height: 6px; background: var(--gray-bg); border-radius: 3px; overflow: hidden; }
+        .sp-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease, background 0.4s ease; width: 0%; background: var(--blue); }
+        .sp-fill.green { background: var(--green); }
+        .sp-fill.amber { background: var(--amber); }
+        .sp-fill.red { background: var(--red); }
+        .sp-fill.black { background: var(--black); }
+        .sp-pct { font-size: 11px; font-weight: 700; color: var(--text); min-width: 32px; text-align: right; }
+
+        .live-result { display: flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 700; white-space: nowrap; transition: all 0.3s ease; }
+        .live-result.pending { background: var(--gray-bg); color: var(--text-muted); }
+        .live-result.green { background: var(--green-bg); color: var(--green-dark); }
+        .live-result.amber { background: var(--amber-bg); color: var(--amber-dark); }
+        .live-result.red { background: var(--red-bg); color: var(--red-dark); }
+        .live-result.black { background: var(--black-bg); color: var(--black-dark); }
+
+        .main { max-width: 860px; margin: 0 auto; padding: 24px 32px 60px; }
+
+        .opp-card { background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 22px 26px; margin-bottom: 20px; box-shadow: var(--shadow-sm); }
+        .opp-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+        .opp-fields { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+        .opp-field label { display: block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-muted); margin-bottom: 5px; }
+        .opp-field input { width: 100%; padding: 9px 13px; border: 1px solid var(--border); border-radius: 10px; font-size: 13px; font-family: inherit; color: var(--text); transition: border-color 0.15s ease; }
+        .opp-field input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(79,107,246,0.08); }
+
+        .section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin: 28px 0 14px; display: flex; align-items: center; gap: 8px; }
+        .section-label .sl-line { flex: 1; height: 1px; background: var(--border); }
+
+        .threshold-card { background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 22px 26px; margin-bottom: 10px; box-shadow: var(--shadow-sm); transition: all 0.2s ease; }
+        .threshold-card .tc-top { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; }
+        .tc-num { font-size: 11px; font-weight: 800; color: var(--text-muted); min-width: 24px; padding-top: 2px; }
+        .tc-q { flex: 1; font-size: 14px; font-weight: 600; color: var(--text); }
+        .tc-btns { display: flex; gap: 8px; }
+        .tc-btn { padding: 8px 24px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--white); font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; color: var(--text-sec); transition: all 0.15s ease; }
+        .tc-btn:hover { border-color: var(--border-hover); background: var(--gray-bg); }
+        .tc-btn.yes.active { background: var(--green); color: #fff; border-color: var(--green); }
+        .tc-btn.no.active { background: var(--red); color: #fff; border-color: var(--red); }
+        .threshold-card.passed { border-color: var(--green-border); background: var(--green-bg); }
+        .threshold-card.failed { border-color: var(--red-border); background: var(--red-bg); }
+
+        .stop-banner { display: none; margin: 16px 0; padding: 24px; border-radius: var(--radius-lg); background: var(--red-bg); border: 2px solid var(--red-border); text-align: center; animation: fadeSlideIn 0.3s ease; }
+        .stop-banner.visible { display: block; }
+        .stop-banner h4 { font-size: 18px; font-weight: 800; color: var(--red-dark); margin-bottom: 4px; }
+        .stop-banner p { font-size: 13px; color: var(--red-dark); opacity: 0.8; }
+
+        .info-btn { width: 22px; height: 22px; border-radius: 50%; background: var(--blue-bg); color: var(--blue); border: 1.5px solid var(--blue-border); font-size: 11px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s ease; flex-shrink: 0; font-family: inherit; line-height: 1; position: relative; }
+        .info-btn:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+        .info-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15,18,37,0.4); z-index: 200; align-items: center; justify-content: center; animation: fadeIn 0.2s ease; backdrop-filter: blur(2px); }
+        .info-overlay.visible { display: flex; }
+        .info-panel { background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); max-width: 520px; width: 92%; max-height: 85vh; overflow-y: auto; animation: slideUp 0.25s ease; }
+        .info-panel-header { padding: 22px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 12px; }
+        .info-panel-header .ip-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--blue-bg); color: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+        .info-panel-header .ip-title { font-size: 16px; font-weight: 700; flex: 1; }
+        .info-panel-header .ip-ref { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+        .info-panel-close { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: var(--white); color: var(--text-muted); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s ease; flex-shrink: 0; font-family: inherit; }
+        .info-panel-close:hover { background: var(--gray-bg); color: var(--text); }
+        .info-panel-body { padding: 20px 24px 24px; }
+        .ip-section { margin-bottom: 18px; }
+        .ip-section:last-child { margin-bottom: 0; }
+        .ip-section-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); margin-bottom: 6px; }
+        .ip-section-text { font-size: 13px; color: var(--text-sec); line-height: 1.65; }
+        .ip-section-text strong { color: var(--text); }
+        .ip-section-text ul { padding-left: 18px; margin-top: 6px; }
+        .ip-section-text ul li { margin-bottom: 4px; }
+        .ip-source { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 6px; background: var(--gray-bg); font-size: 11px; font-weight: 600; color: var(--text-muted); }
+
+        .q-card { background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 22px 26px; margin-bottom: 10px; box-shadow: var(--shadow-sm); transition: all 0.2s ease; }
+        .q-card.answered-green { border-color: var(--green-border); }
+        .q-card.answered-amber { border-color: var(--amber-border); }
+        .q-card.answered-red { border-color: var(--red-border); background: var(--red-bg); }
+        .q-card.answered-black { border-color: var(--black-border); background: var(--black-bg); }
+        .q-top { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 14px; }
+        .q-num { font-size: 11px; font-weight: 800; color: var(--text-muted); min-width: 28px; padding-top: 3px; }
+        .q-text { flex: 1; font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.4; }
+        .q-answered-badge { padding: 3px 10px; border-radius: 6px; font-size: 10px; font-weight: 700; display: none; flex-shrink: 0; }
+        .q-card.answered-green .q-answered-badge { display: inline; background: var(--green-bg); color: var(--green-dark); }
+        .q-card.answered-green .q-answered-badge::after { content: '✓ Tier 1'; }
+        .q-card.answered-amber .q-answered-badge { display: inline; background: var(--amber-bg); color: var(--amber-dark); }
+        .q-card.answered-amber .q-answered-badge::after { content: '⚠ Caution'; }
+        .q-card.answered-red .q-answered-badge { display: inline; background: var(--red-bg); color: var(--red-dark); }
+        .q-card.answered-red .q-answered-badge::after { content: '🔴 Standard'; }
+        .q-card.answered-black .q-answered-badge { display: inline; background: var(--black-bg); color: var(--black-dark); }
+        .q-card.answered-black .q-answered-badge::after { content: '⛔ Disqualify'; }
+        .q-options { display: flex; flex-direction: column; gap: 6px; }
+        .q-option { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 10px; border: 1.5px solid var(--border); cursor: pointer; transition: all 0.15s ease; user-select: none; }
+        .q-option:hover { border-color: var(--border-hover); background: #FAFBFF; }
+        .q-radio { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.15s ease; }
+        .q-radio-inner { width: 8px; height: 8px; border-radius: 50%; transition: all 0.15s ease; opacity: 0; }
+        .q-option-text { flex: 1; font-size: 13px; color: var(--text-sec); }
+        .q-option-tag { padding: 3px 10px; border-radius: 6px; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+        .q-option-tag.green { background: var(--green-bg); color: var(--green-dark); }
+        .q-option-tag.amber { background: var(--amber-bg); color: var(--amber-dark); }
+        .q-option-tag.red { background: var(--red-bg); color: var(--red-dark); }
+        .q-option-tag.black { background: var(--black-bg); color: var(--black-dark); }
+        .q-option.selected-green { border-color: var(--green); background: var(--green-bg); }
+        .q-option.selected-green .q-radio { border-color: var(--green); }
+        .q-option.selected-green .q-radio-inner { background: var(--green); opacity: 1; }
+        .q-option.selected-green .q-option-text { color: var(--green-dark); font-weight: 600; }
+        .q-option.selected-amber { border-color: var(--amber); background: var(--amber-bg); }
+        .q-option.selected-amber .q-radio { border-color: var(--amber); }
+        .q-option.selected-amber .q-radio-inner { background: var(--amber); opacity: 1; }
+        .q-option.selected-amber .q-option-text { color: var(--amber-dark); font-weight: 600; }
+        .q-option.selected-red { border-color: var(--red); background: var(--red-bg); }
+        .q-option.selected-red .q-radio { border-color: var(--red); }
+        .q-option.selected-red .q-radio-inner { background: var(--red); opacity: 1; }
+        .q-option.selected-red .q-option-text { color: var(--red-dark); font-weight: 600; }
+        .q-option.selected-black { border-color: var(--black); background: var(--black-bg); }
+        .q-option.selected-black .q-radio { border-color: var(--black); }
+        .q-option.selected-black .q-radio-inner { background: var(--black); opacity: 1; }
+        .q-option.selected-black .q-option-text { color: var(--black-dark); font-weight: 600; }
+        .q-note { margin-top: 6px; font-size: 11px; font-style: italic; color: var(--text-muted); line-height: 1.5; display: none; }
+        .q-option.selected-amber .q-note { display: block; color: var(--amber-dark); opacity: 0.7; }
+        .q-option.selected-red .q-note { display: block; color: var(--red-dark); opacity: 0.7; }
+        .q-option.selected-black .q-note { display: block; color: var(--black-dark); opacity: 0.7; }
+        .q-inline-stop { display: none; margin-top: 10px; padding: 12px 16px; border-radius: 10px; font-size: 12px; font-weight: 600; text-align: center; animation: fadeSlideIn 0.3s ease; }
+        .q-inline-stop.red-stop { background: var(--red-bg); border: 1px solid var(--red-border); color: var(--red-dark); }
+        .q-inline-stop.black-stop { background: #E0E1E9; border: 1px solid var(--black-border); color: var(--black-dark); }
+        .q-card.answered-red .q-inline-stop.red-stop { display: block; }
+        .q-card.answered-black .q-inline-stop.black-stop { display: block; }
+        .qual-section.blocked { opacity: 0.3; pointer-events: none; }
+
+        .result-section { margin-top: 28px; }
+        .result-card { padding: 32px; border-radius: var(--radius-lg); text-align: center; transition: all 0.3s ease; }
+        .result-card .r-icon { font-size: 44px; margin-bottom: 12px; }
+        .result-card h3 { font-size: 22px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 6px; }
+        .result-card p { font-size: 14px; max-width: 540px; margin: 0 auto; line-height: 1.6; }
+        .result-card.neutral { background: var(--gray-bg); border: 2px solid var(--border); }
+        .result-card.neutral h3 { color: var(--text-sec); }
+        .result-card.neutral p { color: var(--text-muted); }
+        .result-card.green { background: var(--green-bg); border: 2px solid var(--green-border); }
+        .result-card.green h3 { color: var(--green-dark); }
+        .result-card.green p { color: var(--green-dark); opacity: 0.8; }
+        .result-card.amber { background: var(--amber-bg); border: 2px solid var(--amber-border); }
+        .result-card.amber h3 { color: var(--amber-dark); }
+        .result-card.amber p { color: var(--amber-dark); opacity: 0.8; }
+        .result-card.red { background: var(--red-bg); border: 2px solid var(--red-border); }
+        .result-card.red h3 { color: var(--red-dark); }
+        .result-card.red p { color: var(--red-dark); opacity: 0.8; }
+        .result-card.black { background: #E0E1E9; border: 2px solid var(--black-border); }
+        .result-card.black h3 { color: var(--black-dark); }
+        .result-card.black p { color: var(--black-dark); opacity: 0.8; }
+        .result-card.inprogress { background: var(--blue-bg); border: 2px solid var(--blue-border); }
+        .result-card.inprogress h3 { color: var(--blue-dark); }
+        .result-card.inprogress p { color: var(--blue-dark); opacity: 0.8; }
+        .result-cautions { margin-top: 16px; text-align: left; max-width: 540px; margin-left: auto; margin-right: auto; }
+        .result-cautions h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+        .result-cautions ul { list-style: none; padding: 0; }
+        .result-cautions ul li { font-size: 12px; padding: 4px 0; display: flex; align-items: flex-start; gap: 8px; }
+        .result-cautions ul li::before { content: '⚠'; flex-shrink: 0; }
+
+        .routing-card { background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 22px 26px; margin-top: 20px; box-shadow: var(--shadow-sm); }
+        .routing-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+        .routing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .r-field { grid-column: 1 / -1; }
+        .r-field.half { grid-column: auto; }
+        .r-field label { display: block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-muted); margin-bottom: 5px; }
+        .r-field textarea, .r-field input { width: 100%; padding: 9px 13px; border: 1px solid var(--border); border-radius: 10px; font-size: 13px; font-family: inherit; color: var(--text); resize: vertical; transition: border-color 0.15s ease; }
+        .r-field textarea { min-height: 56px; }
+        .r-field textarea:focus, .r-field input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(79,107,246,0.08); }
+        .routing-decision-box { padding: 14px 18px; border-radius: 10px; font-size: 14px; font-weight: 700; text-align: center; }
+
+        .actions-bar { text-align: center; margin-top: 24px; display: flex; justify-content: center; gap: 10px; }
+        .action-btn { padding: 11px 26px; border-radius: 12px; border: 1px solid var(--border); background: var(--white); font-size: 13px; font-weight: 600; font-family: inherit; color: var(--text-sec); cursor: pointer; transition: all 0.15s ease; display: inline-flex; align-items: center; gap: 8px; }
+        .action-btn:hover { background: var(--gray-bg); }
+        .action-btn.reset { border-color: var(--red-border); background: var(--red-bg); color: var(--red-dark); }
+        .action-btn.reset:hover { background: var(--red); color: #fff; }
+
+        .footer { max-width: 860px; margin: 0 auto; padding: 0 32px 40px; text-align: center; }
+        .footer p { font-size: 11px; color: var(--text-muted); }
+
+        @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 768px) {
+            .header-inner { padding: 28px 20px; }
+            .main { padding: 20px 16px 40px; }
+            .status-inner { padding: 10px 16px; }
+            .opp-fields { grid-template-columns: 1fr; }
+            .routing-grid { grid-template-columns: 1fr; }
+            .r-field.half { grid-column: 1 / -1; }
+            .legend-bar { padding: 12px 16px 0; }
+            .info-panel { width: 96%; max-height: 90vh; }
+        }
+
+        @media print {
+            .status-bar, .actions-bar, .legend-bar, .info-btn, .info-overlay { display: none !important; }
+            body { background: #fff; }
+        }
+    </style>
+</head>
+<body style="">
+
+    <div class="info-overlay" id="infoOverlay" onclick="closeInfo(event)">
+        <div class="info-panel" onclick="event.stopPropagation()">
+            <div class="info-panel-header">
+                <div class="ip-icon">ℹ</div>
+                <div style="flex:1;"><div class="ip-title" id="ipTitle">Organisation Size: 100–2,000 Employees</div><div class="ip-ref" id="ipRef">Threshold 01</div></div>
+                <button class="info-panel-close" onclick="closeInfo()">✕</button>
+            </div>
+            <div class="info-panel-body" id="ipBody"><div class="ip-section"><div class="ip-section-label">What This Means</div><div class="ip-section-text">The customer's total active employee headcount falls within 100 to 2,000. This includes all employees on payroll — full time, part time, casual, and contractors on invoice.</div></div><div class="ip-section"><div class="ip-section-label">Why It Matters</div><div class="ip-section-text">The Tier One fast-track motion is designed for mid-market NZ organisations. Below 100 employees, the integration cost may not justify the investment. Above 2,000, complexity typically increases — multi-entity structures, complex awards, and bespoke requirements become more common.</div></div><div class="ip-section"><div class="ip-section-label">How to Check</div><div class="ip-section-text">Use CRM data or Datapay records. This information should already be available in your account intelligence — you do not need to ask the customer directly.</div></div><div class="ip-section"><div class="ip-section-label">Source</div><div class="ip-section-text"><span class="ip-source">📄 Qualification Checklist v2.0</span></div></div></div>
+        </div>
+    </div>
+
+    <div class="header">
+        <div class="header-inner">
+            <div class="header-badges">
+                <span class="h-badge elmo">● ELMO</span>
+                <span class="h-badge datapay">● DATAPAY</span>
+                <span class="h-badge ver">API v2.0 · Qualification Gate v2.1</span>
+            </div>
+            <h1>Seller <span>Qualification Gate</span></h1>
+            <p>Determine in 2–3 minutes whether this opportunity qualifies for the Tier One fast-track motion.</p>
+            <div class="header-meta">
+                <div class="hm-item"><div class="hm-icon bl">👤</div><div><div class="hm-val">Internal Only</div><div class="hm-label">Audience</div></div></div>
+                <div class="hm-item"><div class="hm-icon gr">⏱️</div><div><div class="hm-val">2–3 Minutes</div><div class="hm-label">Duration</div></div></div>
+                <div class="hm-item"><div class="hm-icon am">🎯</div><div><div class="hm-val">Eligibility Gate</div><div class="hm-label">Purpose</div></div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="status-bar">
+        <div class="status-inner">
+            <div class="status-progress">
+                <span class="sp-label">Progress</span>
+                <div class="sp-track"><div class="sp-fill" id="progFill" style="width: 13%;"></div></div>
+                <span class="sp-pct" id="progPct">13%</span>
+            </div>
+            <div class="live-result pending" id="liveResult">⏳ 14 remaining</div>
+        </div>
+    </div>
+
+    <div class="legend-bar">
+        <div class="legend-row">
+            <div class="legend-item"><div class="legend-dot g"></div> Tier 1 — Proceed</div>
+            <div class="legend-item"><div class="legend-dot a"></div> Caution — Flag for PS Review</div>
+            <div class="legend-item"><div class="legend-dot r"></div> Route to Standard Motion</div>
+            <div class="legend-item"><div class="legend-dot b"></div> Disqualify — Not a Fit</div>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="opp-card">
+            <h3>📋 Opportunity Details</h3>
+            <div class="opp-fields">
+                <div class="opp-field"><label>Customer Name</label><input type="text" id="custName" placeholder="Enter customer name"></div>
+                <div class="opp-field"><label>Seller Name</label><input type="text" id="sellerName" placeholder="Enter seller name"></div>
+                <div class="opp-field"><label>Date</label><input type="date" id="qualDate"></div>
+            </div>
+        </div>
+
+        <div class="section-label">🚦 Threshold Gate — Non-Negotiable <span class="sl-line"></span></div>
+
+        <div class="threshold-card passed" id="thresh1">
+            <div class="tc-top">
+                <span class="tc-num">01</span>
+                <div class="tc-q">Organisation size: <strong>100–2,000 employees</strong> <button class="info-btn" onclick="event.stopPropagation();showInfo('thresh-size')">i</button></div>
+            </div>
+            <div class="tc-btns">
+                <button class="tc-btn yes active" onclick="setThreshold(0,'yes')">✓ Yes</button>
+                <button class="tc-btn no" onclick="setThreshold(0,'no')">✕ No</button>
+            </div>
+        </div>
+
+        <div class="threshold-card passed" id="thresh2">
+            <div class="tc-top">
+                <span class="tc-num">02</span>
+                <div class="tc-q"><strong>ELMO HRIS:</strong> Currently using or committed to implementation. <button class="info-btn" onclick="event.stopPropagation();showInfo('thresh-elmo')">i</button></div>
+            </div>
+            <div class="tc-btns">
+                <button class="tc-btn yes active" onclick="setThreshold(1,'yes')">✓ Yes</button>
+                <button class="tc-btn no" onclick="setThreshold(1,'no')">✕ No</button>
+            </div>
+        </div>
+
+        <div class="stop-banner" id="thresholdStop">
+            <h4>⛔ STOP — Threshold Not Met</h4>
+            <p>Route to Standard Datapay Opportunity. Do not proceed to qualification or discovery.</p>
+        </div>
+
+        <div class="qual-section" id="qualSection">
+            <div class="section-label">🔍 Qualification — Select One Option Per Question <span class="sl-line"></span></div>
+            <div id="questionsContainer"><div class="q-card" id="qcard-0">
+                    <div class="q-top">
+                        <span class="q-num">Q1</span>
+                        <div class="q-text">Payroll Geography <button class="info-btn" onclick="event.stopPropagation();showInfo('q-geography')">i</button></div>
+                        <span class="q-answered-badge"></span>
+                    </div>
+                    <div class="q-options"><div class="q-option" onclick="selectOption(0,0)" id="opt-0-0">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">New Zealand payroll only</div></div>
+                        <span class="q-option-tag green">🟢 Tier 1</span>
+                    </div><div class="q-option" onclick="selectOption(0,1)" id="opt-0-1">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">Multi-country payroll required</div><div class="q-note">Datapay supports NZ payroll only. Not a fit for any current motion.</div></div>
+                        <span class="q-option-tag black">⛔ Disqualify</span>
+                    </div></div><div class="q-inline-stop black-stop">⛔ Disqualified — not a fit for any current Datapay motion.</div>
+                </div><div class="q-card" id="qcard-1">
+                    <div class="q-top">
+                        <span class="q-num">Q2</span>
+                        <div class="q-text">Legal Entity Structure <button class="info-btn" onclick="event.stopPropagation();showInfo('q-entity')">i</button></div>
+                        <span class="q-answered-badge"></span>
+                    </div>
+                    <div class="q-options"><div class="q-option" onclick="selectOption(1,0)" id="opt-1-0">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">Single legal entity for payroll purposes</div></div>
+                        <span class="q-option-tag green">🟢 Tier 1</span>
+                    </div><div class="q-option" onclick="selectOption(1,1)" id="opt-1-1">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">Multiple legal entities for payroll purposes</div><div class="q-note">Multi-entity is not supported in Tier One. Route to standard motion.</div></div>
+                        <span class="q-option-tag red">🔴 Standard</span>
+                    </div></div><div class="q-inline-stop red-stop">🔴 Not Tier One — route to Standard Datapay sales motion.</div>
+                </div><div class="q-card" id="qcard-2">
+                    <div class="q-top">
+                        <span class="q-num">Q3</span>
+                        <div class="q-text">Payroll Complexity <button class="info-btn" onclick="event.stopPropagation();showInfo('q-complexity')">i</button></div>
+                        <span class="q-answered-badge"></span>
+                    </div>
+                    <div class="q-options"><div class="q-option" onclick="selectOption(2,0)" id="opt-2-0">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">No complex awards, bespoke rules, or non-standard employment types</div></div>
+                        <span class="q-option-tag green">🟢 Tier 1</span>
+                    </div><div class="q-option" onclick="selectOption(2,1)" id="opt-2-1">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">Union coverage or awards present, but not complex</div><div class="q-note">May not disqualify. PS should assess before committing.</div></div>
+                        <span class="q-option-tag amber">🟡 Caution</span>
+                    </div><div class="q-option" onclick="selectOption(2,2)" id="opt-2-2">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">Complex award interpretation or bespoke payroll rules required</div><div class="q-note">Complex rules require broader solutioning. Route to standard motion.</div></div>
+                        <span class="q-option-tag red">🔴 Standard</span>
+                    </div></div><div class="q-inline-stop red-stop">🔴 Not Tier One — route to Standard Datapay sales motion.</div>
+                </div><div class="q-card" id="qcard-3">
+                    <div class="q-top">
+                        <span class="q-num">Q4</span>
+                        <div class="q-text">Employment Types <button class="info-btn" onclick="event.stopPropagation();showInfo('q-emp-types')">i</button></div>
+                        <span class="q-answered-badge"></span>
+                    </div>
+                    <div class="q-options"><div class="q-option" onclick="selectOption(3,0)" id="opt-3-0">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">Standard types only — Full Time, Part Time, Casual, Contractor on Invoice</div></div>
+                        <span class="q-option-tag green">🟢 Tier 1</span>
+                    </div><div class="q-option" onclick="selectOption(3,1)" id="opt-3-1">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">Other employment types present beyond the standard four</div><div class="q-note">Only four types supported. Unsupported types will fail sync. Confirm with PS.</div></div>
+                        <span class="q-option-tag amber">🟡 Caution</span>
+                    </div></div>
+                </div><div class="q-card" id="qcard-4">
+                    <div class="q-top">
+                        <span class="q-num">Q5</span>
+                        <div class="q-text">Pay Rate Types <button class="info-btn" onclick="event.stopPropagation();showInfo('q-payrate')">i</button></div>
+                        <span class="q-answered-badge"></span>
+                    </div>
+                    <div class="q-options"><div class="q-option" onclick="selectOption(4,0)" id="opt-4-0">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">Basic Hourly Rate and/or Annual Salary only</div></div>
+                        <span class="q-option-tag green">🟢 Tier 1</span>
+                    </div><div class="q-option" onclick="selectOption(4,1)" id="opt-4-1">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">Customer uses Daily Rate or other pay rate types</div><div class="q-note">Only Basic Hourly Rate and Annual Salary are supported. Daily Rate and FTE are not supported.</div></div>
+                        <span class="q-option-tag amber">🟡 Caution</span>
+                    </div></div>
+                </div><div class="q-card" id="qcard-5">
+                    <div class="q-top">
+                        <span class="q-num">Q6</span>
+                        <div class="q-text">System Dependencies <button class="info-btn" onclick="event.stopPropagation();showInfo('q-systems')">i</button></div>
+                        <span class="q-answered-badge"></span>
+                    </div>
+                    <div class="q-options"><div class="q-option" onclick="selectOption(5,0)" id="opt-5-0">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">No T&amp;A, rostering, or custom integrations with other systems</div></div>
+                        <span class="q-option-tag green">🟢 Tier 1</span>
+                    </div><div class="q-option" onclick="selectOption(5,1)" id="opt-5-1">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">T&amp;A, rostering, or custom integrations in scope</div><div class="q-note">System dependencies outside standard scope. Route to standard motion.</div></div>
+                        <span class="q-option-tag red">🔴 Standard</span>
+                    </div></div><div class="q-inline-stop red-stop">🔴 Not Tier One — route to Standard Datapay sales motion.</div>
+                </div><div class="q-card" id="qcard-6">
+                    <div class="q-top">
+                        <span class="q-num">Q7</span>
+                        <div class="q-text">Data Flow Requirements <button class="info-btn" onclick="event.stopPropagation();showInfo('q-dataflows')">i</button></div>
+                        <span class="q-answered-badge"></span>
+                    </div>
+                    <div class="q-options"><div class="q-option" onclick="selectOption(6,0)" id="opt-6-0">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">Standard employee master data sync only (onboarding, changes, terminations)</div></div>
+                        <span class="q-option-tag green">🟢 Tier 1</span>
+                    </div><div class="q-option" onclick="selectOption(6,1)" id="opt-6-1">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">Non-standard data flows required — GL, finance, benefits, or identity</div><div class="q-note">Non-standard data flows are outside Tier One. Route to standard motion.</div></div>
+                        <span class="q-option-tag red">🔴 Standard</span>
+                    </div></div><div class="q-inline-stop red-stop">🔴 Not Tier One — route to Standard Datapay sales motion.</div>
+                </div><div class="q-card" id="qcard-7">
+                    <div class="q-top">
+                        <span class="q-num">Q8</span>
+                        <div class="q-text">Integration Approach <button class="info-btn" onclick="event.stopPropagation();showInfo('q-integration')">i</button></div>
+                        <span class="q-answered-badge"></span>
+                    </div>
+                    <div class="q-options"><div class="q-option" onclick="selectOption(7,0)" id="opt-7-0">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">Standard API — no middleware or bespoke work needed</div></div>
+                        <span class="q-option-tag green">🟢 Tier 1</span>
+                    </div><div class="q-option" onclick="selectOption(7,1)" id="opt-7-1">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">Custom integration, middleware, or third-party connectors required</div><div class="q-note">Custom integration is not Tier One. Route to standard motion.</div></div>
+                        <span class="q-option-tag red">🔴 Standard</span>
+                    </div></div><div class="q-inline-stop red-stop">🔴 Not Tier One — route to Standard Datapay sales motion.</div>
+                </div><div class="q-card" id="qcard-8">
+                    <div class="q-top">
+                        <span class="q-num">Q9</span>
+                        <div class="q-text">Employee Contracts <button class="info-btn" onclick="event.stopPropagation();showInfo('q-contracts')">i</button></div>
+                        <span class="q-answered-badge"></span>
+                    </div>
+                    <div class="q-options"><div class="q-option" onclick="selectOption(8,0)" id="opt-8-0">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">Employees hold single contracts</div></div>
+                        <span class="q-option-tag green">🟢 Tier 1</span>
+                    </div><div class="q-option" onclick="selectOption(8,1)" id="opt-8-1">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">Employees hold multiple concurrent contracts</div><div class="q-note">Multi-contract is not supported by the integration or Datapay natively. Not a fit.</div></div>
+                        <span class="q-option-tag black">⛔ Disqualify</span>
+                    </div></div><div class="q-inline-stop black-stop">⛔ Disqualified — not a fit for any current Datapay motion.</div>
+                </div><div class="q-card" id="qcard-9">
+                    <div class="q-top">
+                        <span class="q-num">Q10</span>
+                        <div class="q-text">Multi-Job Employees <button class="info-btn" onclick="event.stopPropagation();showInfo('q-multijob')">i</button></div>
+                        <span class="q-answered-badge"></span>
+                    </div>
+                    <div class="q-options"><div class="q-option" onclick="selectOption(9,0)" id="opt-9-0">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">Employees work a single role under their contract</div></div>
+                        <span class="q-option-tag green">🟢 Tier 1</span>
+                    </div><div class="q-option" onclick="selectOption(9,1)" id="opt-9-1">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">Employees work multiple roles under one contract</div><div class="q-note">Multi-job support is uncertain. Datapay uses alternate rates/cost centres. PS should assess.</div></div>
+                        <span class="q-option-tag amber">🟡 Caution</span>
+                    </div></div>
+                </div><div class="q-card" id="qcard-10">
+                    <div class="q-top">
+                        <span class="q-num">Q11</span>
+                        <div class="q-text">Effective Dating <button class="info-btn" onclick="event.stopPropagation();showInfo('q-effective')">i</button></div>
+                        <span class="q-answered-badge"></span>
+                    </div>
+                    <div class="q-options"><div class="q-option" onclick="selectOption(10,0)" id="opt-10-0">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">No requirement for back-dated or future-dated changes</div></div>
+                        <span class="q-option-tag green">🟢 Tier 1</span>
+                    </div><div class="q-option" onclick="selectOption(10,1)" id="opt-10-1">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">Effective dating required</div><div class="q-note">Partially supported — depends on the field. Bank/tax effective dating on roadmap. Requires PS assessment.</div></div>
+                        <span class="q-option-tag amber">🟡 Caution</span>
+                    </div></div>
+                </div><div class="q-card" id="qcard-11">
+                    <div class="q-top">
+                        <span class="q-num">Q12</span>
+                        <div class="q-text">KiwiSaver Options <button class="info-btn" onclick="event.stopPropagation();showInfo('q-kiwisaver')">i</button></div>
+                        <span class="q-answered-badge"></span>
+                    </div>
+                    <div class="q-options"><div class="q-option" onclick="selectOption(11,0)" id="opt-11-0">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">Opt In / Opt Out only</div></div>
+                        <span class="q-option-tag green">🟢 Tier 1</span>
+                    </div><div class="q-option" onclick="selectOption(11,1)" id="opt-11-1">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">Other KiwiSaver options needed</div><div class="q-note">ELMO supports only Opt In/Out. Others set up directly in Datapay. KiwiSaver management on roadmap.</div></div>
+                        <span class="q-option-tag amber">🟡 Caution</span>
+                    </div></div>
+                </div><div class="q-card" id="qcard-12">
+                    <div class="q-top">
+                        <span class="q-num">Q13</span>
+                        <div class="q-text">Employee Transfers <button class="info-btn" onclick="event.stopPropagation();showInfo('q-transfers')">i</button></div>
+                        <span class="q-answered-badge"></span>
+                    </div>
+                    <div class="q-options"><div class="q-option" onclick="selectOption(12,0)" id="opt-12-0">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">No expectation for automated transfers</div></div>
+                        <span class="q-option-tag green">🟢 Tier 1</span>
+                    </div><div class="q-option" onclick="selectOption(12,1)" id="opt-12-1">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">Customer expects transfers to sync automatically</div><div class="q-note">All transfer types are not supported. Manual setup required in both systems.</div></div>
+                        <span class="q-option-tag amber">🟡 Caution</span>
+                    </div></div>
+                </div><div class="q-card" id="qcard-13">
+                    <div class="q-top">
+                        <span class="q-num">Q14</span>
+                        <div class="q-text">Product Readiness <button class="info-btn" onclick="event.stopPropagation();showInfo('q-product')">i</button></div>
+                        <span class="q-answered-badge"></span>
+                    </div>
+                    <div class="q-options"><div class="q-option" onclick="selectOption(13,0)" id="opt-13-0">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">Expectations align with current GA features</div></div>
+                        <span class="q-option-tag green">🟢 Tier 1</span>
+                    </div><div class="q-option" onclick="selectOption(13,1)" id="opt-13-1">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">Customer expects features not yet at GA</div><div class="q-note">Roadmap items include: bank/tax effective dating, KiwiSaver management, termination enhancements, additional emails.</div></div>
+                        <span class="q-option-tag amber">🟡 Caution</span>
+                    </div></div>
+                </div></div>
+        </div>
+
+        <div class="result-section">
+            <div class="result-card inprogress" id="resultCard">
+                <div class="r-icon" id="rIcon">🔍</div>
+                <h3 id="rTitle">Qualification In Progress</h3>
+                <p id="rText">14 items remaining.</p>
+                <div class="result-cautions" id="rCautions" style="display:none;">
+                    <h4 id="rCautionsTitle">⚠ Caution Flags Identified</h4>
+                    <ul id="rCautionList"></ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="routing-card">
+            <h3>📝 Routing Summary</h3>
+            <div class="routing-grid">
+                <div class="r-field"><label>Routing Decision</label><div class="routing-decision-box" id="routingBox" style="background: var(--blue-bg); color: var(--blue-dark);">⏳ 14 remaining</div></div>
+                <div class="r-field"><label>Flags &amp; Notes</label><textarea id="cautionNotes" placeholder="Auto-populated from your selections..."></textarea></div>
+                <div class="r-field half"><label>Next Step</label><input type="text" id="nextStep" placeholder="e.g., Route to Lite Discovery"></div>
+                <div class="r-field half"><label>Owner</label><input type="text" id="nextOwner" placeholder="e.g., Adnan Siamwala"></div>
+                <div class="r-field"><label>Escalation Notes</label><textarea id="escNotes" placeholder="Any additional context..."></textarea></div>
+            </div>
+        </div>
+
+        <div class="actions-bar">
+            <button class="action-btn" onclick="window.print()">🖨️ Print / PDF</button>
+            <button class="action-btn reset" onclick="resetAll()">↺ Reset All</button>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>DATAPAY × ELMO PARTNERSHIP · API v2.0 — Seller Qualification Gate v2.1 · Internal Use Only</p>
+    </div>
+
+    <script>
+        const infoContent = {
+            'thresh-size': {
+                title: 'Organisation Size: 100–2,000 Employees',
+                ref: 'Threshold 01',
+                sections: [
+                    { label: 'What This Means', text: 'The customer\'s total active employee headcount falls within 100 to 2,000. This includes all employees on payroll — full time, part time, casual, and contractors on invoice.' },
+                    { label: 'Why It Matters', text: 'The Tier One fast-track motion is designed for mid-market NZ organisations. Below 100 employees, the integration cost may not justify the investment. Above 2,000, complexity typically increases — multi-entity structures, complex awards, and bespoke requirements become more common.' },
+                    { label: 'How to Check', text: 'Use CRM data or Datapay records. This information should already be available in your account intelligence — you do not need to ask the customer directly.' },
+                    { label: 'Source', text: '<span class="ip-source">📄 Qualification Checklist v2.0</span>' }
+                ]
+            },
+            'thresh-elmo': {
+                title: 'ELMO HRIS — Authoritative Source',
+                ref: 'Threshold 02',
+                sections: [
+                    { label: 'What This Means', text: 'The customer is either already using ELMO as their HR Information System, or has committed to implementing it. They are not evaluating alternatives.' },
+                    { label: 'Why It Matters', text: 'The integration requires ELMO as the <strong>authoritative source for employee creation</strong>. All new hires must originate in ELMO — the integration syncs them to Datapay. If the customer isn\'t on ELMO, there\'s nothing to integrate with.' },
+                    { label: 'What "Committed" Means', text: 'The customer has signed with ELMO or is in active implementation. A customer who is "considering ELMO" does not qualify — the HRIS decision needs to be made first.' },
+                    { label: 'Source', text: '<span class="ip-source">📄 ELMO-Datapay Integration API</span> <span class="ip-source">📄 Integration Specs v2</span>' }
+                ]
+            },
+            'q-geography': {
+                title: 'Payroll Geography',
+                ref: 'Q1',
+                sections: [
+                    { label: 'What This Means', text: 'Which country or countries does the customer process payroll for? The integration is designed exclusively for <strong>New Zealand payroll</strong>.' },
+                    { label: 'Why It Matters', text: 'Datapay supports NZ payroll only. The integration specs explicitly confirm: <strong>"New Zealand (NZ) SUPPORTED. Australia (AU) NOT SUPPORTED."</strong> This is not a Tier One limitation — it\'s a fundamental product boundary. If the customer needs payroll outside NZ, Datapay cannot help.' },
+                    { label: 'What About NZ + Australia?', text: 'If a customer has NZ operations on Datapay but also processes Australian payroll elsewhere, the <strong>NZ portion may still qualify</strong> for the integration — but only if the NZ entity operates independently. This scenario may require additional discussion before proceeding.' },
+                    { label: 'Source', text: '<span class="ip-source">📄 Integration Specs v2 — Geographic Coverage</span>' }
+                ]
+            },
+            'q-entity': {
+                title: 'Legal Entity Structure',
+                ref: 'Q2',
+                sections: [
+                    { label: 'What This Means', text: 'How many separate legal entities does the customer use for payroll purposes? A legal entity is a distinct company registered for tax and employment purposes — each with its own IRD number and employment agreements.' },
+                    { label: 'Why It Matters', text: 'The integration supports <strong>CSM 1 (one company per legal entity)</strong> only. Multi-entity grouped companies (CSM 2) are not available in NZ. If a customer operates multiple legal entities, they need separate configurations — which takes it out of Tier One scope.' },
+                    { label: 'Example', text: '<strong>Single entity:</strong> ABC Ltd employs all 300 staff under one company.<br><strong>Multiple entities:</strong> ABC Holdings has ABC Services Ltd (200 staff) and ABC Consulting Ltd (100 staff) — two separate payroll entities.' },
+                    { label: 'Route to Standard', text: 'Multi-entity is not a disqualifier for Datapay — it just requires broader scoping through the standard sales motion. The customer may still be an opportunity.' },
+                    { label: 'Source', text: '<span class="ip-source">📄 Integration Specs v2 — CSM Compatibility</span>' }
+                ]
+            },
+            'q-complexity': {
+                title: 'Payroll Complexity',
+                ref: 'Q3',
+                sections: [
+                    { label: 'What This Means', text: 'Does the customer have payroll rules that go beyond standard NZ employment? This includes <strong>union collective agreements, complex award interpretation, industry-specific pay rules,</strong> or bespoke payroll calculations.' },
+                    { label: 'Green: No Complexity', text: 'Standard NZ employment — employees are paid on straightforward hourly, daily, or salaried arrangements without collective agreements or complex rules.' },
+                    { label: 'Amber: Union Coverage Present', text: 'The customer has employees covered by collective agreements, but the agreements are relatively simple (e.g., standard pay rates by role). PS should assess whether the integration can handle this.' },
+                    { label: 'Red: Complex Awards/Rules', text: 'Industry awards with complex interpretation (e.g., shift allowances, penal rates, multi-tier overtime), bespoke payroll rules, or custom calculations. This needs proper solutioning outside Tier One.' },
+                    { label: 'How to Check', text: 'Ask internally: does the customer\'s industry typically involve collective agreements? (e.g., healthcare, education, transport, hospitality). If yes, it\'s at least amber.' },
+                    { label: 'Source', text: '<span class="ip-source">📄 Qualification Checklist v2.0</span>' }
+                ]
+            },
+            'q-emp-types': {
+                title: 'Employment Types',
+                ref: 'Q4',
+                sections: [
+                    { label: 'What This Means', text: 'What types of employment does the customer use? The integration only supports four specific types.' },
+                    { label: 'Supported Types', text: '<ul><li><strong>Full Time</strong></li><li><strong>Part Time</strong></li><li><strong>Casual</strong></li><li><strong>Contractor on Invoice</strong></li></ul>' },
+                    { label: 'What Happens with Unsupported Types?', text: 'If an unsupported employment type is used in ELMO, it will <strong>fail the employee sync</strong> and the error should be resolved before that employee can sync. This doesn\'t break the integration — it just means that specific employee won\'t sync until fixed.' },
+                    { label: 'Example', text: 'A customer uses "Fixed Term" as an employment type in ELMO. This is not one of the four supported types. PS should assess whether it can be mapped to one of the standard types.' },
+                    { label: 'Source', text: '<span class="ip-source">📄 ELMO-Datapay Integration API — Data Map</span> <span class="ip-source">📄 Integration Specs v2 — Field Mappings</span>' }
+                ]
+            },
+            'q-payrate': {
+                title: 'Pay Rate Types',
+                ref: 'Q5',
+                sections: [
+                    { label: 'What This Means', text: 'How are employees\' pay rates structured? The integration supports specific pay rate types only.' },
+                    { label: 'Supported Rate Types', text: '<ul><li><strong>Basic Hourly Rate</strong> (per hour)</li><li><strong>Annual Salary</strong> (per annum)</li></ul>' },
+                    { label: 'Not Supported', text: '<ul><li><strong>Daily Rate</strong> (per day) — NOT SUPPORTED</li><li><strong>FTE</strong> — NOT SUPPORTED</li></ul>' },
+                    { label: 'What Happens?', text: 'If an unsupported pay rate type is used, the employee sync will fail for that field. The employee may still sync other data, but the pay rate won\'t come through correctly.' },
+                    { label: 'Example', text: 'A construction company pays site workers a daily rate of $350/day. This would not sync through the integration. PS should assess whether these can be converted to hourly equivalents.' },
+                    { label: 'Source', text: '<span class="ip-source">📄 Integration Specs v2 — Pay Rate Options</span>' }
+                ]
+            },
+            'q-systems': {
+                title: 'System Dependencies',
+                ref: 'Q6',
+                sections: [
+                    { label: 'What This Means', text: 'Does the customer expect other systems to be part of this integration? The Tier One integration covers ELMO ↔ Datapay <strong>employee master data sync only</strong>.' },
+                    { label: 'Not Supported in Tier One', text: '<ul><li><strong>Time & Attendance</strong> — NOT SUPPORTED (three-way integration via BioTime is under development)</li><li><strong>Rostering</strong> — NOT SUPPORTED</li><li><strong>Leave Requests/Balances</strong> — NOT SUPPORTED (BioTime under development)</li><li><strong>Payslip Delivery</strong> — NOT SUPPORTED (BioTime under development)</li></ul>' },
+                    { label: 'Why Route to Standard?', text: 'The customer may still want the employee data integration, but if T&A or rostering is in scope for the same project, the complexity and dependencies take it out of the Tier One fast-track.' },
+                    { label: 'Source', text: '<span class="ip-source">📄 Integration Specs v2 — Capabilities Overview</span>' }
+                ]
+            },
+            'q-dataflows': {
+                title: 'Data Flow Requirements',
+                ref: 'Q7',
+                sections: [
+                    { label: 'What This Means', text: 'What data does the customer expect to flow between systems? Tier One covers <strong>standard employee master data only</strong>: personal details, bank, tax, pay rate, KiwiSaver, employment type, and termination.' },
+                    { label: 'Not Included', text: '<ul><li>General Ledger / accounting feeds</li><li>Finance system integrations</li><li>Benefits administration</li><li>Identity / access management</li><li>Costing / cost centre allocation</li><li>Reporting outputs</li></ul>' },
+                    { label: 'Common Misconception', text: 'Customers sometimes assume "integration" means all data flows between all systems. Be clear early: this integration syncs <strong>employee data</strong> between HR and payroll. It\'s not a middleware platform.' },
+                    { label: 'Source', text: '<span class="ip-source">📄 ELMO-Datapay Integration API — Scope</span> <span class="ip-source">📄 SOW Template — Exclusions</span>' }
+                ]
+            },
+            'q-integration': {
+                title: 'Integration Approach',
+                ref: 'Q8',
+                sections: [
+                    { label: 'What This Means', text: 'The Tier One integration is a <strong>direct point-to-point REST API</strong> between ELMO and Datapay. There is no middleware layer. ELMO calls Datapay\'s standard API endpoints.' },
+                    { label: 'What\'s Not Supported', text: 'Custom integration work, middleware platforms (e.g., Boomi, MuleSoft), third-party connectors, or bespoke API development. The SOW explicitly excludes: <strong>"Development of middleware to facilitate the integration between Datapay and ELMO"</strong> and <strong>"Customisation of APIs."</strong>' },
+                    { label: 'Why This Matters', text: 'If the customer needs anything beyond the standard API endpoints, it requires custom scoping — which is outside Tier One. This doesn\'t mean it\'s impossible, it just means it needs the standard motion.' },
+                    { label: 'Source', text: '<span class="ip-source">📄 SOW Template — Exclusions</span> <span class="ip-source">📄 Integration Specs v2 — Architecture</span>' }
+                ]
+            },
+            'q-contracts': {
+                title: 'Employee Contracts — Multi-Contract',
+                ref: 'Q9',
+                sections: [
+                    { label: 'What This Means', text: 'Does the customer have employees who hold <strong>multiple concurrent employment contracts</strong>? For example, an employee who works as a Teacher (Contract 1) and a Sports Coach (Contract 2) under separate employment agreements with the same organisation.' },
+                    { label: 'Why This Is a Disqualifier', text: 'Multi-contract is <strong>not natively supported by the integration or by Datapay</strong>. The only workaround requires creating separate employee profiles for each contract — which means separate HR profiles in ELMO too. Most customers will not accept this workaround, and the integration is not recommended for customers who require multi-contract support.' },
+                    { label: 'Important Distinction', text: '<strong>Multi-contract</strong> (multiple employment agreements) is different from <strong>multi-job</strong> (multiple roles under one contract). Multi-job is a separate question (Q10).' },
+                    { label: 'Source', text: '<span class="ip-source">📄 Integration Specs v2 — Additional Contracts</span> <span class="ip-source">📄 ELMO-Datapay Integration API — Limitations</span>' }
+                ]
+            },
+            'q-multijob': {
+                title: 'Multi-Job Employees',
+                ref: 'Q10',
+                sections: [
+                    { label: 'What This Means', text: 'Does the customer have employees who work <strong>multiple roles under a single contract</strong>? For example, an employee contracted as a Barista who also works shifts as a Supervisor — same contract, different roles with potentially different pay rates.' },
+                    { label: 'How This Differs from Multi-Contract', text: '<strong>Multi-job:</strong> One employment agreement, multiple roles (e.g., Barista + Supervisor under one contract).<br><strong>Multi-contract:</strong> Multiple separate employment agreements (e.g., Teacher contract + Sports Coach contract). Multi-contract is a disqualifier (Q9). Multi-job is a caution flag.' },
+                    { label: 'Current Support Status', text: 'The integration specs list multi-job employee support as <strong>uncertain</strong>. Datapay handles multi-job scenarios using alternate rates and cost centres, but whether this flows through the integration is not confirmed.' },
+                    { label: 'Common Industries', text: 'Hospitality, retail, healthcare, and education commonly have multi-job employees. If your customer is in one of these industries, it\'s worth checking.' },
+                    { label: 'Source', text: '<span class="ip-source">📄 Integration Specs v2 — Employee Scenario Compatibility</span>' }
+                ]
+            },
+            'q-effective': {
+                title: 'Effective Dating',
+                ref: 'Q11',
+                sections: [
+                    { label: 'What This Means', text: 'Does the customer need to apply changes with a <strong>past or future effective date</strong> that flows through the integration? For example, a pay rise approved today but effective from the 1st of next month, or a back-dated tax code correction.' },
+                    { label: 'Current Support', text: 'Effective dating is <strong>partially supported</strong> — it depends on the field. Some fields support past/future dates in ELMO, some in Datapay, and some in neither. Check the data map for specifics.' },
+                    { label: 'What\'s On the Roadmap', text: '<ul><li>Effective Date Sync for Bank Details — Discovery status</li><li>Effective Date Sync for Tax Section — Discovery status</li></ul>These are requested but not yet committed.' },
+                    { label: 'Example', text: 'A customer wants to enter a pay rate change in ELMO today that takes effect on 1 July. For pay rate, this IS supported (both past and future in both systems). But for bank details, future effective dating from ELMO is NOT supported.' },
+                    { label: 'Source', text: '<span class="ip-source">📄 ELMO-Datapay Integration API — Data Map</span> <span class="ip-source">📄 Integration Specs v2 — Roadmap</span>' }
+                ]
+            },
+            'q-kiwisaver': {
+                title: 'KiwiSaver Options',
+                ref: 'Q12',
+                sections: [
+                    { label: 'What This Means', text: 'What KiwiSaver enrolment options does the customer need to manage through the integration?' },
+                    { label: 'Supported Options', text: '<ul><li><strong>Opt In</strong> — Employee chooses to join KiwiSaver</li><li><strong>Opt Out</strong> — Employee chooses not to join</li></ul>These are the only two options ELMO currently supports.' },
+                    { label: 'Not Supported Through ELMO', text: '<ul><li>Existing Member</li><li>Exempt</li><li>Existing Opt Out</li></ul>These can still be set up <strong>directly in Datapay</strong> — they just won\'t sync through the integration. The customer needs to understand this manual step.' },
+                    { label: 'Contribution Rates', text: 'Employee KiwiSaver contribution rates (3%, 4%, 6%, 8%, 10%) and employer contribution rates DO sync bi-directionally. Using an unsupported percentage in Datapay will cause a sync error in ELMO.' },
+                    { label: 'Roadmap', text: 'KiwiSaver Management is listed as a feature request in "Discovery" status — requested but not yet committed.' },
+                    { label: 'Source', text: '<span class="ip-source">📄 ELMO-Datapay Integration API — Limitations</span> <span class="ip-source">📄 Integration Specs v2 — Roadmap</span>' }
+                ]
+            },
+            'q-transfers': {
+                title: 'Employee Transfers',
+                ref: 'Q13',
+                sections: [
+                    { label: 'What This Means', text: 'Does the customer expect the integration to handle moving employees between pay groups, departments, or legal entities automatically?' },
+                    { label: 'All Transfer Types Are NOT SUPPORTED', text: '<ul><li><strong>Pay Group Transfer</strong> (within same legal entity) — NOT SUPPORTED</li><li><strong>Company Transfer — Same Country</strong> (between legal entities in NZ) — NOT SUPPORTED</li><li><strong>Company Transfer — Different Country</strong> — NOT SUPPORTED</li></ul>' },
+                    { label: 'What Has to Happen Instead', text: 'All employee transfers require <strong>manual setup in both systems</strong>. The integration cannot move an employee from one pay group or entity to another. This is a hands-on process for the payroll/HR admin.' },
+                    { label: 'Why It\'s Caution, Not Red', text: 'Many customers don\'t actually need automated transfers — especially single-entity customers. But if the customer <em>expects</em> this to be automated, they need to be told upfront that it\'s manual. Setting this expectation early prevents problems later.' },
+                    { label: 'Source', text: '<span class="ip-source">📄 Integration Specs v2 — Company Movements & Transfers</span>' }
+                ]
+            },
+            'q-product': {
+                title: 'Product Readiness',
+                ref: 'Q14',
+                sections: [
+                    { label: 'What This Means', text: 'Is the customer expecting features that are <strong>not yet at General Availability (GA)</strong>? The integration is still undergoing roadmap improvements.' },
+                    { label: 'Features Not Yet at GA', text: '<ul><li>Effective Date Sync for Bank Details — Discovery</li><li>Effective Date Sync for Tax Section — Discovery</li><li>KiwiSaver Management — Discovery</li><li>Termination Support (enhancements) — Not Started</li><li>Additional Emails — Not Started</li><li>New Employee State Transition — Not Started</li></ul>' },
+                    { label: 'What to Do', text: 'If the customer\'s expectations include any of the above, flag it as a caution. Set expectations carefully and <strong>confirm the current product status before making any commitments</strong>. Positioning a feature as available when it isn\'t will damage trust and create delivery issues.' },
+                    { label: 'Source', text: '<span class="ip-source">📄 Integration Specs v2 — Feature Requests & Roadmap</span>' }
+                ]
+            }
+        };
+
+        function showInfo(key) {
+            const info = infoContent[key];
+            if (!info) return;
+            document.getElementById('ipTitle').textContent = info.title;
+            document.getElementById('ipRef').textContent = info.ref;
+            document.getElementById('ipBody').innerHTML = info.sections.map(s => `<div class="ip-section"><div class="ip-section-label">${s.label}</div><div class="ip-section-text">${s.text}</div></div>`).join('');
+            document.getElementById('infoOverlay').classList.add('visible');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeInfo(e) {
+            if (e && e.target !== document.getElementById('infoOverlay')) return;
+            document.getElementById('infoOverlay').classList.remove('visible');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') { document.getElementById('infoOverlay').classList.remove('visible'); document.body.style.overflow = ''; } });
+
+        const questions = [
+            { num:'Q1', text:'Payroll Geography', infoKey:'q-geography', options:[
+                { label:'New Zealand payroll only', tier:'green', note:'' },
+                { label:'Multi-country payroll required', tier:'black', note:'Datapay supports NZ payroll only. Not a fit for any current motion.' }
+            ]},
+            { num:'Q2', text:'Legal Entity Structure', infoKey:'q-entity', options:[
+                { label:'Single legal entity for payroll purposes', tier:'green', note:'' },
+                { label:'Multiple legal entities for payroll purposes', tier:'red', note:'Multi-entity is not supported in Tier One. Route to standard motion.' }
+            ]},
+            { num:'Q3', text:'Payroll Complexity', infoKey:'q-complexity', options:[
+                { label:'No complex awards, bespoke rules, or non-standard employment types', tier:'green', note:'' },
+                { label:'Union coverage or awards present, but not complex', tier:'amber', note:'May not disqualify. PS should assess before committing.' },
+                { label:'Complex award interpretation or bespoke payroll rules required', tier:'red', note:'Complex rules require broader solutioning. Route to standard motion.' }
+            ]},
+            { num:'Q4', text:'Employment Types', infoKey:'q-emp-types', options:[
+                { label:'Standard types only — Full Time, Part Time, Casual, Contractor on Invoice', tier:'green', note:'' },
+                { label:'Other employment types present beyond the standard four', tier:'amber', note:'Only four types supported. Unsupported types will fail sync. Confirm with PS.' }
+            ]},
+            { num:'Q5', text:'Pay Rate Types', infoKey:'q-payrate', options:[
+                { label:'Basic Hourly Rate and/or Annual Salary only', tier:'green', note:'' },
+                { label:'Customer uses Daily Rate or other pay rate types', tier:'amber', note:'Only Basic Hourly Rate and Annual Salary are supported. Daily Rate and FTE are not supported.' }
+            ]},
+            { num:'Q6', text:'System Dependencies', infoKey:'q-systems', options:[
+                { label:'No T&A, rostering, or custom integrations with other systems', tier:'green', note:'' },
+                { label:'T&A, rostering, or custom integrations in scope', tier:'red', note:'System dependencies outside standard scope. Route to standard motion.' }
+            ]},
+            { num:'Q7', text:'Data Flow Requirements', infoKey:'q-dataflows', options:[
+                { label:'Standard employee master data sync only (onboarding, changes, terminations)', tier:'green', note:'' },
+                { label:'Non-standard data flows required — GL, finance, benefits, or identity', tier:'red', note:'Non-standard data flows are outside Tier One. Route to standard motion.' }
+            ]},
+            { num:'Q8', text:'Integration Approach', infoKey:'q-integration', options:[
+                { label:'Standard API — no middleware or bespoke work needed', tier:'green', note:'' },
+                { label:'Custom integration, middleware, or third-party connectors required', tier:'red', note:'Custom integration is not Tier One. Route to standard motion.' }
+            ]},
+            { num:'Q9', text:'Employee Contracts', infoKey:'q-contracts', options:[
+                { label:'Employees hold single contracts', tier:'green', note:'' },
+                { label:'Employees hold multiple concurrent contracts', tier:'black', note:'Multi-contract is not supported by the integration or Datapay natively. Not a fit.' }
+            ]},
+            { num:'Q10', text:'Multi-Job Employees', infoKey:'q-multijob', options:[
+                { label:'Employees work a single role under their contract', tier:'green', note:'' },
+                { label:'Employees work multiple roles under one contract', tier:'amber', note:'Multi-job support is uncertain. Datapay uses alternate rates/cost centres. PS should assess.' }
+            ]},
+            { num:'Q11', text:'Effective Dating', infoKey:'q-effective', options:[
+                { label:'No requirement for back-dated or future-dated changes', tier:'green', note:'' },
+                { label:'Effective dating required', tier:'amber', note:'Partially supported — depends on the field. Bank/tax effective dating on roadmap. Requires PS assessment.' }
+            ]},
+            { num:'Q12', text:'KiwiSaver Options', infoKey:'q-kiwisaver', options:[
+                { label:'Opt In / Opt Out only', tier:'green', note:'' },
+                { label:'Other KiwiSaver options needed', tier:'amber', note:'ELMO supports only Opt In/Out. Others set up directly in Datapay. KiwiSaver management on roadmap.' }
+            ]},
+            { num:'Q13', text:'Employee Transfers', infoKey:'q-transfers', options:[
+                { label:'No expectation for automated transfers', tier:'green', note:'' },
+                { label:'Customer expects transfers to sync automatically', tier:'amber', note:'All transfer types are not supported. Manual setup required in both systems.' }
+            ]},
+            { num:'Q14', text:'Product Readiness', infoKey:'q-product', options:[
+                { label:'Expectations align with current GA features', tier:'green', note:'' },
+                { label:'Customer expects features not yet at GA', tier:'amber', note:'Roadmap items include: bank/tax effective dating, KiwiSaver management, termination enhancements, additional emails.' }
+            ]}
+        ];
+
+        let thresholds = [null, null];
+        let answers = new Array(questions.length).fill(null);
+
+        function renderQuestions() {
+            const c = document.getElementById('questionsContainer');
+            c.innerHTML = questions.map((q, qi) => {
+                const opts = q.options.map((o, oi) => {
+                    let tag = o.tier==='green'?'🟢 Tier 1':o.tier==='amber'?'🟡 Caution':o.tier==='red'?'🔴 Standard':'⛔ Disqualify';
+                    return `<div class="q-option" onclick="selectOption(${qi},${oi})" id="opt-${qi}-${oi}">
+                        <div class="q-radio"><div class="q-radio-inner"></div></div>
+                        <div style="flex:1;"><div class="q-option-text">${o.label}</div>${o.note?`<div class="q-note">${o.note}</div>`:''}</div>
+                        <span class="q-option-tag ${o.tier}">${tag}</span>
+                    </div>`;
+                }).join('');
+                const hasRed = q.options.some(o=>o.tier==='red');
+                const hasBlack = q.options.some(o=>o.tier==='black');
+                let stops = '';
+                if(hasRed) stops+=`<div class="q-inline-stop red-stop">🔴 Not Tier One — route to Standard Datapay sales motion.</div>`;
+                if(hasBlack) stops+=`<div class="q-inline-stop black-stop">⛔ Disqualified — not a fit for any current Datapay motion.</div>`;
+                return `<div class="q-card" id="qcard-${qi}">
+                    <div class="q-top">
+                        <span class="q-num">${q.num}</span>
+                        <div class="q-text">${q.text} <button class="info-btn" onclick="event.stopPropagation();showInfo('${q.infoKey}')">i</button></div>
+                        <span class="q-answered-badge"></span>
+                    </div>
+                    <div class="q-options">${opts}</div>${stops}
+                </div>`;
+            }).join('');
+        }
+
+        function setThreshold(idx,val) {
+            thresholds[idx]=val;
+            const card=document.getElementById(idx===0?'thresh1':'thresh2');
+            card.querySelectorAll('.tc-btn').forEach(b=>b.classList.remove('active'));
+            if(val==='yes'){card.querySelectorAll('.tc-btn')[0].classList.add('active');card.className='threshold-card passed';}
+            else{card.querySelectorAll('.tc-btn')[1].classList.add('active');card.className='threshold-card failed';}
+            evalThresholds(); evaluate();
+        }
+
+        function evalThresholds() {
+            const stop=document.getElementById('thresholdStop'),qual=document.getElementById('qualSection');
+            if(thresholds[0]===null||thresholds[1]===null){stop.classList.remove('visible');qual.classList.add('blocked');return;}
+            if(thresholds[0]==='yes'&&thresholds[1]==='yes'){stop.classList.remove('visible');qual.classList.remove('blocked');}
+            else{stop.classList.add('visible');qual.classList.add('blocked');}
+        }
+
+        function selectOption(qi,oi) {
+            const q=questions[qi],opt=q.options[oi];
+            answers[qi]={tier:opt.tier,label:q.text+': '+opt.label,num:q.num};
+            q.options.forEach((_,oIdx)=>{document.getElementById(`opt-${qi}-${oIdx}`).classList.remove('selected-green','selected-amber','selected-red','selected-black');});
+            document.getElementById(`opt-${qi}-${oi}`).classList.add('selected-'+opt.tier);
+            const card=document.getElementById(`qcard-${qi}`);
+            card.classList.remove('answered-green','answered-amber','answered-red','answered-black');
+            card.classList.add('answered-'+opt.tier);
+            evaluate();
+        }
+
+        function evaluate() {
+            const total=2+questions.length;let done=0;
+            if(thresholds[0]!==null)done++;if(thresholds[1]!==null)done++;
+            answers.forEach(a=>{if(a!==null)done++;});
+            const pct=Math.round((done/total)*100);
+            document.getElementById('progFill').style.width=pct+'%';
+            document.getElementById('progPct').textContent=pct+'%';
+            const tFail=(thresholds[0]==='no'||thresholds[1]==='no');
+            const tPass=(thresholds[0]==='yes'&&thresholds[1]==='yes');
+            const hasBlack=answers.some(a=>a&&a.tier==='black');
+            const hasRed=answers.some(a=>a&&a.tier==='red');
+            const cautions=answers.filter(a=>a&&a.tier==='amber');
+            const allAns=answers.every(a=>a!==null);
+            const allGreen=allAns&&!hasRed&&!hasBlack&&cautions.length===0;
+            const f=document.getElementById('progFill'),l=document.getElementById('liveResult');
+            const rc=document.getElementById('resultCard'),ri=document.getElementById('rIcon'),rt=document.getElementById('rTitle'),rtx=document.getElementById('rText');
+            const rC=document.getElementById('rCautions'),rCT=document.getElementById('rCautionsTitle'),rCL=document.getElementById('rCautionList');
+            const rb=document.getElementById('routingBox');
+            f.classList.remove('green','amber','red','black');rC.style.display='none';
+            if(tFail){
+                f.classList.add('red');l.className='live-result red';l.innerHTML='⛔ Route to Standard';
+                rc.className='result-card red';ri.textContent='⛔';rt.textContent='Route to Standard Motion';
+                rtx.textContent='Threshold gate failed. Route to Standard Datapay Opportunity.';
+                rb.style.background='var(--red-bg)';rb.style.color='var(--red-dark)';rb.textContent='🔴 Route to Standard Motion';
+                document.getElementById('cautionNotes').value='';document.getElementById('nextStep').value='Route to Standard Datapay Opportunity';return;
+            }
+            if(hasBlack){
+                const bi=answers.filter(a=>a&&a.tier==='black');
+                f.classList.add('black');l.className='live-result black';l.innerHTML='⛔ Disqualified';
+                rc.className='result-card black';ri.textContent='🚫';rt.textContent='Disqualified — Not a Fit';
+                rtx.textContent='This customer requires capability Datapay does not currently offer. Do not create an opportunity.';
+                rC.style.display='block';rCT.textContent='⛔ Disqualifying Factors';
+                rCL.innerHTML=bi.map(c=>'<li style="list-style:none;">'+c.num+': '+c.label+'</li>').join('');
+                rb.style.background='#E0E1E9';rb.style.color='var(--black-dark)';rb.textContent='⛔ Disqualified — Not a Fit';
+                document.getElementById('cautionNotes').value='DISQUALIFIED:\n'+bi.map(c=>c.num+': '+c.label).join('\n');
+                document.getElementById('nextStep').value='No action — customer is not a fit';return;
+            }
+            if(hasRed){
+                const ri2=answers.filter(a=>a&&a.tier==='red');
+                f.classList.add('red');l.className='live-result red';l.innerHTML='🔴 Route to Standard';
+                rc.className='result-card red';ri.textContent='🔴';rt.textContent='Route to Standard Motion';
+                rtx.textContent=ri2.length+' item'+(ri2.length>1?'s':'')+' exceed Tier One scope. Route to standard motion.';
+                rC.style.display='block';rCT.textContent='🔴 Items Requiring Standard Motion';
+                rCL.innerHTML=ri2.map(c=>'<li style="list-style:none;">'+c.num+': '+c.label+'</li>').join('');
+                rb.style.background='var(--red-bg)';rb.style.color='var(--red-dark)';rb.textContent='🔴 Route to Standard Motion';
+                document.getElementById('cautionNotes').value='ROUTE TO STANDARD:\n'+ri2.map(c=>c.num+': '+c.label).join('\n');
+                document.getElementById('nextStep').value='Route to Standard Datapay Opportunity';return;
+            }
+            if(!tPass||!allAns){
+                const rem=total-done;l.className='live-result pending';l.innerHTML='⏳ '+rem+' remaining';
+                rc.className='result-card inprogress';ri.textContent='🔍';rt.textContent='Qualification In Progress';
+                rtx.textContent=rem+' item'+(rem>1?'s':'')+' remaining.';
+                rb.style.background='var(--blue-bg)';rb.style.color='var(--blue-dark)';rb.textContent='⏳ '+rem+' remaining';return;
+            }
+            if(allGreen){
+                f.classList.add('green');l.className='live-result green';l.innerHTML='🟢 Tier One — Proceed';
+                rc.className='result-card green';ri.textContent='🎉';rt.textContent='Proceed as Tier One';
+                rtx.textContent='All checks passed. No knockouts. No caution flags. Proceed to Lite Discovery.';
+                rb.style.background='var(--green-bg)';rb.style.color='var(--green-dark)';rb.textContent='🟢 Tier One — Proceed to Lite Discovery';
+                document.getElementById('cautionNotes').value='';document.getElementById('nextStep').value='Route to Lite Discovery';return;
+            }
+            f.classList.add('amber');l.className='live-result amber';l.innerHTML='🟡 Caution ('+cautions.length+')';
+            rc.className='result-card amber';ri.textContent='⚠️';rt.textContent='Proceed with Caution';
+            rtx.textContent=cautions.length+' caution flag'+(cautions.length>1?'s':'')+' identified. Route to Lite Discovery + pre-sales review.';
+            rC.style.display='block';rCT.textContent='⚠ Caution Flags';
+            rCL.innerHTML=cautions.map(c=>'<li>'+c.num+': '+c.label+'</li>').join('');
+            rb.style.background='var(--amber-bg)';rb.style.color='var(--amber-dark)';rb.textContent='🟡 Proceed with Caution — Lite Discovery + PS Review';
+            document.getElementById('cautionNotes').value='CAUTION:\n'+cautions.map(c=>c.num+': '+c.label).join('\n');
+            document.getElementById('nextStep').value='Lite Discovery — flag caution items for pre-sales review';
+        }
+
+        function resetAll(){
+            if(!confirm('Reset all? This cannot be undone.'))return;
+            thresholds=[null,null];answers=new Array(questions.length).fill(null);
+            document.querySelectorAll('.threshold-card').forEach(c=>{c.className='threshold-card';c.querySelectorAll('.tc-btn').forEach(b=>b.classList.remove('active'));});
+            document.getElementById('thresholdStop').classList.remove('visible');
+            document.getElementById('qualSection').classList.add('blocked');
+            renderQuestions();
+            ['custName','sellerName','cautionNotes','nextStep','nextOwner','escNotes'].forEach(id=>document.getElementById(id).value='');
+            document.getElementById('qualDate').value=new Date().toISOString().split('T')[0];
+            evaluate();
+        }
+
+        document.getElementById('qualDate').value=new Date().toISOString().split('T')[0];
+        renderQuestions();evaluate();
+    </script>
+
+</body></html>
