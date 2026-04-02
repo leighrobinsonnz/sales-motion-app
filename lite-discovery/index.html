@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lite Discovery</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap');
+    :root {
+      --bg:#F6F8FB;--white:#FFFFFF;--border:#D9E1EC;--divider:#DCE6EF;--text-primary:#334155;--text-secondary:#475569;--text-muted:#64748B;
+      --elmo-primary:#0F766E;--elmo-light:#E6F7F5;--elmo-dark:#115E59;--header-navy:#20364F;--shadow-md:0 4px 12px rgba(0,0,0,0.06),0 2px 4px rgba(0,0,0,0.04);
+      --radius:12px;--radius-lg:16px;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Montserrat',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text-primary);line-height:1.6;-webkit-font-smoothing:antialiased;padding:32px}
+    .ld-wrap{max-width:860px;margin:0 auto}
+    .ld-header{background:linear-gradient(135deg,var(--header-navy) 0%,#2C4A66 60%,#35627A 100%);border-radius:var(--radius-lg) var(--radius-lg) 0 0;position:relative;overflow:hidden;padding:32px 32px 28px;border-bottom:4px solid #5FB3A7}
+    .ld-header::before{content:'';position:absolute;top:-100px;right:-60px;width:350px;height:350px;background:radial-gradient(circle,rgba(255,255,255,0.08) 0%,transparent 70%);border-radius:50%}
+    .ld-header *{position:relative;z-index:1}
+    .ld-header h2{font-size:26px;font-weight:300;color:#fff;margin-bottom:6px;letter-spacing:-0.3px}
+    .ld-header h2 span{color:#9FE3D8;-webkit-text-fill-color:initial;background:none}
+    .ld-header p{font-size:14px;font-weight:300;color:rgba(255,255,255,0.82);max-width:560px}
+    .ld-header-meta{display:flex;gap:28px;margin-top:16px;flex-wrap:wrap}
+    .ld-hm{display:flex;align-items:center;gap:8px}
+    .ld-hm-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;background:rgba(255,255,255,0.1)}
+    .ld-hm-val{font-size:12px;font-weight:400;color:#fff}.ld-hm-label{font-size:10px;color:#9FE3D8;text-transform:uppercase;letter-spacing:0.6px}
+    .ld-body{background:var(--white);border-radius:0 0 var(--radius-lg) var(--radius-lg);box-shadow:var(--shadow-md);padding:28px 32px 32px}
+    .ld-sec{margin-bottom:24px;padding:22px 24px;border-radius:var(--radius);border:1px solid var(--border);background:var(--white);position:relative}.ld-sec::after{content:"";position:absolute;left:24px;right:24px;bottom:-12px;height:1px;background:var(--divider);display:block}.ld-sec:last-of-type::after{display:none}
+    .ld-sec-head{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+    .ld-sec-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+    .ld-sec-title{font-size:14px;font-weight:500;color:var(--text-primary)}
+    .ld-q{margin-bottom:18px}.ld-q:last-child{margin-bottom:0}
+    .ld-q-label{font-size:12px;font-weight:500;color:var(--text-secondary);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+    .ld-q-label .ldql-num{font-size:10px;font-weight:600;color:var(--elmo-dark);background:var(--elmo-light);padding:2px 7px;border-radius:5px}
+    .ld-chips{display:flex;flex-wrap:wrap;gap:6px}
+    .ld-chip{padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--white);font-size:12px;font-weight:400;color:var(--text-secondary);cursor:pointer;transition:all 0.15s;user-select:none}
+    .ld-chip:hover{border-color:#CBD0E0;background:var(--bg)}
+    .ld-chip.selected{border-color:var(--elmo-primary);background:var(--elmo-light);color:var(--elmo-dark);font-weight:500}
+    .ld-other{margin-top:8px;display:none}.ld-other.visible{display:block}
+    .ld-other input,.ld-input input,.ld-input textarea,.ld-date input{width:100%;padding:9px 13px;border:1px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;font-weight:300;color:var(--text-primary);transition:border-color 0.15s}
+    .ld-input textarea{min-height:48px;resize:vertical}
+    .ld-other input:focus,.ld-input input:focus,.ld-input textarea:focus,.ld-date input:focus{outline:none;border-color:var(--elmo-primary);box-shadow:0 0 0 3px rgba(79,107,246,0.08)}
+    .ld-hint{font-size:11px;color:var(--text-secondary);margin-top:4px;font-style:italic}
+    .ld-toggle-row{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;margin-bottom:6px;transition:background 0.15s}
+    .ld-toggle-row:hover{background:var(--bg)}
+    .ld-toggle-text{flex:1;font-size:13px;font-weight:400;color:var(--text-primary)}
+    .ld-toggle-btns{display:flex;gap:4px;flex-shrink:0}
+    .ld-toggle-btn{padding:5px 14px;border-radius:6px;font-size:11px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:var(--white);color:var(--text-secondary);transition:all 0.15s;user-select:none}
+    .ld-toggle-btn:hover{border-color:var(--text-muted)}
+    .ld-toggle-btn.sel-yes{background:var(--elmo-light);border-color:#9AD8D0;color:var(--elmo-dark)}
+    .ld-toggle-btn.sel-no{background:#FEF2F2;border-color:#FECACA;color:#991B1B}
+    .ld-toggle-btn.sel-unsure{background:#FFFBEB;border-color:#FDE68A;color:#92400E}
+    .ld-toggle-warning{display:none;margin:8px 0 12px 14px;padding:8px 14px;border-radius:8px;background:#FFFBEB;border:1px solid #FDE68A;font-size:12px;font-weight:600;color:#92400E}
+    .ld-toggle-warning.visible{display:block}
+    .ld-themes{margin-bottom:24px;padding:18px 22px;border-radius:var(--radius);background:var(--bg);border:1px solid var(--border)}
+    .ld-themes-title{font-size:12px;font-weight:500;color:var(--elmo-dark);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
+    .ld-themes-desc{font-size:12px;color:var(--text-muted);margin-bottom:10px}
+    .ld-actions{text-align:center;margin-top:28px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+    .ld-action-btn{padding:11px 26px;border-radius:12px;border:1px solid var(--border);background:var(--white);font-size:13px;font-weight:500;font-family:inherit;color:var(--text-secondary);cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all 0.15s}
+    .ld-action-btn:hover{background:var(--elmo-light);border-color:#9AD8D0;color:var(--elmo-dark)}.ld-action-btn.reset{border-color:#FECACA;background:#FEF2F2;color:#991B1B}.ld-action-btn.reset:hover{background:#EF4444;color:#fff}
+    .ld-footer{text-align:center;padding:20px 0 0;border-top:1px solid var(--divider)}.ld-footer p{font-size:11px;color:var(--text-secondary);font-weight:300}
+    @media(max-width:768px){body{padding:20px}.ld-body,.ld-header{padding:24px}.ld-toggle-row{flex-direction:column;align-items:flex-start}.ld-toggle-btns{width:100%;flex-wrap:wrap}}
+  </style>
+</head>
+<body>
+  <div class="ld-wrap">
+    <div class="ld-header">
+      <h2>Lite <span>Discovery</span></h2>
+      <p>Use this during the customer conversation. Capture business context, validate fit, and confirm whether the deal should progress.</p>
+      <div class="ld-header-meta">
+        <div class="ld-hm"><div class="ld-hm-icon">🎯</div><div><div class="ld-hm-val">Live Capture</div><div class="ld-hm-label">Purpose</div></div></div>
+        <div class="ld-hm"><div class="ld-hm-icon">⏱️</div><div><div class="ld-hm-val">15–20 Min</div><div class="ld-hm-label">Duration</div></div></div>
+        <div class="ld-hm"><div class="ld-hm-icon">👥</div><div><div class="ld-hm-val">Customer</div><div class="ld-hm-label">Audience</div></div></div>
+      </div>
+    </div>
+
+    <div class="ld-body">
+      <div class="ld-sec">
+        <div class="ld-sec-head"><div class="ld-sec-icon" style="background:#E6F7F5;color:#115E59">💼</div><div class="ld-sec-title">Business Context &amp; Success Criteria</div></div>
+        <div class="ld-q"><div class="ld-q-label"><span class="ldql-num">B1</span> What are the top 1–2 pain points this solves?</div><div class="ld-chips" id="ldB1"></div><div class="ld-other" id="ldB1Other"><input type="text" placeholder="Describe other pain point..." /></div></div>
+        <div class="ld-q"><div class="ld-q-label"><span class="ldql-num">B2</span> Who feels the pain most?</div><div class="ld-chips" id="ldB2"></div><div class="ld-other" id="ldB2Other"><input type="text" placeholder="Other stakeholder..." /></div></div>
+        <div class="ld-q"><div class="ld-q-label"><span class="ldql-num">B3</span> What does success look like in 90 days?</div><div class="ld-chips" id="ldB3"></div></div>
+        <div class="ld-q"><div class="ld-q-label"><span class="ldql-num">B4</span> What is driving timing?</div><div class="ld-input"><input type="text" id="ldB4" placeholder="e.g. contract expiry, ELMO go-live, financial year-end" /></div><div class="ld-hint">Capture the customer's own words if possible.</div></div>
+      </div>
+
+      <div class="ld-sec">
+        <div class="ld-sec-head"><div class="ld-sec-icon" style="background:#ECFDF5;color:#065F46">🔧</div><div class="ld-sec-title">Technical &amp; Scope Confirmation</div></div>
+        <p style="font-size:12px;color:var(--text-secondary);margin-bottom:14px;font-style:italic;font-weight:300">Has anything changed since qualification? This is a pressure test, not a re-run.</p>
+        <div id="ldTechToggles"></div>
+        <div class="ld-toggle-warning" id="ldTechWarning">⚠ This may change the path → validate before progressing</div>
+      </div>
+
+      <div class="ld-sec">
+        <div class="ld-sec-head"><div class="ld-sec-icon" style="background:#EDF6F5;color:#115E59">🤝</div><div class="ld-sec-title">Deal Mechanics</div></div>
+        <div class="ld-q"><div class="ld-q-label"><span class="ldql-num">C1</span> Who is the buying group?</div><div class="ld-input"><input type="text" id="ldC1" placeholder="e.g. HR Director, CFO, IT Manager, Payroll Lead" /></div></div>
+        <div class="ld-q"><div class="ld-q-label"><span class="ldql-num">C2</span> Who signs off on scope, budget, and timeline?</div><div class="ld-input"><input type="text" id="ldC2" placeholder="e.g. GM People & Culture, CFO" /></div></div>
+        <div class="ld-q"><div class="ld-q-label"><span class="ldql-num">C3</span> Target go-live date?</div><div class="ld-date"><input type="date" id="ldC3" /></div></div>
+        <div class="ld-q"><div class="ld-q-label"><span class="ldql-num">C4</span> Any dependencies that affect timing?</div><div class="ld-input"><textarea id="ldC4" placeholder="e.g. budget cycle, board approval, ELMO implementation"></textarea></div></div>
+      </div>
+
+      <div class="ld-themes">
+        <div class="ld-themes-title">💡 Value Themes — What's landing?</div>
+        <div class="ld-themes-desc">Which resonated? Select what to lean into going forward.</div>
+        <div class="ld-chips" id="ldVT"></div>
+      </div>
+
+      <div class="ld-actions">
+        <button class="ld-action-btn" onclick="window.print()">🖨️ Print / PDF</button>
+        <button class="ld-action-btn reset" onclick="ldReset()">↺ Reset All</button>
+      </div>
+      <div class="ld-footer"><p>ELMO × Datapay · API v2.0 — Lite Discovery · Internal Use Only</p></div>
+    </div>
+  </div>
+
+  <script>
+    function ldInit(){
+      ldRenderChips('ldB1',['Manual double-handling between HR and payroll','Data inaccuracy — no single source of truth','Compliance risk in NZ payroll context','Slow onboarding and employee transitions','Admin burden on HR and Finance teams','Other'],'ldB1Other');
+      ldRenderChips('ldB2',['HR','Payroll','IT','Finance','Other'],'ldB2Other');
+      ldRenderChips('ldB3',['Employee data syncing cleanly','No more manual dual entry','Clear source of truth','Reduced payroll errors','HR/Finance freed from reconciliation']);
+      ldRenderChips('ldVT',['Compliance risk reduction','Manual reconciliation elimination','Data accuracy / source of truth','Faster onboarding','Admin burden reduction']);
+      ldRenderTech();
+    }
+
+    function ldRenderChips(id,items,otherId){
+      document.getElementById(id).innerHTML=items.map(item=>`<div class="ld-chip" onclick="ldToggleChip(this${otherId&&item==='Other'?`, '${otherId}'`:''})">${item}</div>`).join('');
+    }
+
+    function ldToggleChip(el,otherId){
+      el.classList.toggle('selected');
+      if(otherId&&el.textContent==='Other'){
+        document.getElementById(otherId).classList.toggle('visible',el.classList.contains('selected'));
+      }
+    }
+
+    const ldTechQs=['Does this still fit the supported Tier 1 path?','No new dependencies introduced since qualification?','No integration concerns raised by the customer?','No scope creep beyond initial qualification?'];
+    const ldTechState={};
+
+    function ldRenderTech(){
+      document.getElementById('ldTechToggles').innerHTML=ldTechQs.map((q,i)=>`<div class="ld-toggle-row" id="ldTR${i}"><div class="ld-toggle-text">${q}</div><div class="ld-toggle-btns"><div class="ld-toggle-btn" onclick="ldSetTech(${i},'yes',this)">Yes</div><div class="ld-toggle-btn" onclick="ldSetTech(${i},'no',this)">No</div><div class="ld-toggle-btn" onclick="ldSetTech(${i},'unsure',this)">Unsure</div></div></div>`).join('');
+    }
+
+    function ldSetTech(idx,val,btn){
+      const row=document.getElementById('ldTR'+idx);
+      row.querySelectorAll('.ld-toggle-btn').forEach(b=>b.classList.remove('sel-yes','sel-no','sel-unsure'));
+      if(ldTechState[idx]===val){
+        delete ldTechState[idx];
+      } else {
+        ldTechState[idx]=val;
+        btn.classList.add('sel-'+val);
+      }
+      document.getElementById('ldTechWarning').classList.toggle('visible',Object.values(ldTechState).some(v=>v==='no'||v==='unsure'));
+    }
+
+    function ldReset(){
+      if(!confirm('Reset all Discovery inputs?')) return;
+      document.querySelectorAll('.ld-chip.selected').forEach(c=>c.classList.remove('selected'));
+      document.querySelectorAll('.ld-other.visible').forEach(el=>el.classList.remove('visible'));
+      document.querySelectorAll('.ld-input input,.ld-input textarea,.ld-date input,.ld-other input').forEach(i=>i.value='');
+      Object.keys(ldTechState).forEach(k=>delete ldTechState[k]);
+      document.querySelectorAll('.ld-toggle-btn').forEach(b=>b.classList.remove('sel-yes','sel-no','sel-unsure'));
+      document.getElementById('ldTechWarning').classList.remove('visible');
+    }
+
+    ldInit();
+  </script>
+</body>
+</html>
